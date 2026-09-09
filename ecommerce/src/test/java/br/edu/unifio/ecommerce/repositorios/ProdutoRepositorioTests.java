@@ -1,7 +1,9 @@
 package br.edu.unifio.ecommerce.repositorios;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.math.BigDecimal;
-import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +31,13 @@ public class ProdutoRepositorioTests {
 
         // SELECT * FROM categoria WHERE id = 1
         var categoria = categoriaRepositorio.findById(Short.parseShort("1")).orElseThrow();
+        produto.setCategoria(categoria);
+
+        System.out.println("ID Antes: " + produto.getId());
+        produtoRepositorio.save(produto);
+        System.out.println("ID Depois: " + produto.getId());
+
+        assertNotNull(produto.getId());
+        assertEquals(6, produto.getId());
     }
 }
