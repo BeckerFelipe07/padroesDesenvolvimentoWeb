@@ -1,10 +1,13 @@
 package br.edu.unifio.ecommerce.repositorios;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.endsWith;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +56,48 @@ public class ProdutoRepositorioTests {
 
     @Test 
     public void deveBuscarTodosOsProdutos () {
-        produtoRepositorio.findAll(Sort);
+        List<Produto> produtos = produtoRepositorio.findAll(Sort.by("nome"));
+
+        assertEquals(5, produtos.size());
+        assertEquals("Caderno Universitário", produtos.get(0).getNome());
+        assertEquals("Mouse Gamer", produtos.get(1).getNome());
+
+    }
+    @Test 
+    public void deveExcluirUmProdutoPorId () {
+        Produto produto = new Produto();
+        produto.setNome("Nome Teste");
+        produto.setDescricao("Descrição Teste");
+        produto.setPreco(new BigDecimal("1.00"));
+        produto.setEstoque(Short.parseShort("1"));    
+
+        Categoria categoria = categoriaRepositorio.findById(Short.parseShort("1")).orElseThrow();
+        produto.setCategoria(categoria);
+
+        produtoRepositorio.save(produto);
+
+        assertTrue(produtoRepositorio.existsById(produto.getId()));
+        produtoRepositorio.deleteById(produto.getId());
+        assertFalse(produtoRepositorio.existsById(produto.getId()));
+    }
+
+    @Test 
+    public void deveAtualizarONomeDeUmProduto () {
+        Produto produto = new Produto();
+        produto.setNome("Nome Teste");
+        produto.setDescricao("Descrição Teste");
+        produto.setPreco(new BigDecimal("1.00"));
+        produto.setEstoque(Short.parseShort("1"));    
+
+        Categoria categoria = categoriaRepositorio.findById(Short.parseShort("1")).orElseThrow();
+        produto.setCategoria(categoria);
+
+        produtoRepositorio.save(produto);
+
+        produto.setNome("Outro Nome Teste");
+        produtoRepositorio.save(produto);
+
+        assertEquals("Outro Nome Teste", produtoRepositorio.findById(produto.getId()).orElseThrow().getNome());
+
     }
 }
