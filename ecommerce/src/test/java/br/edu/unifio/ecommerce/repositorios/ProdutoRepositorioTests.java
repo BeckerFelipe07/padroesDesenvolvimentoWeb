@@ -2,12 +2,14 @@ package br.edu.unifio.ecommerce.repositorios;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.endsWith;
 
 import java.math.BigDecimal;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Sort;
 
 import br.edu.unifio.ecommerce.entidades.Categoria;
 import br.edu.unifio.ecommerce.entidades.Produto;
@@ -39,5 +41,18 @@ public class ProdutoRepositorioTests {
 
         assertNotNull(produto.getId());
         assertEquals(6, produto.getId());
+    }
+
+    @Test 
+    public void deveBuscarUmProdutoPorId () {
+        Produto produto = produtoRepositorio.findById(Integer.parseInt("3")).orElseThrow();
+
+        assertNotNull(produto);
+        assertEquals("Fone Bluetooth", produto.getNome());
+    }
+
+    @Test 
+    public void deveBuscarTodosOsProdutos () {
+        produtoRepositorio.findAll(Sort);
     }
 }
