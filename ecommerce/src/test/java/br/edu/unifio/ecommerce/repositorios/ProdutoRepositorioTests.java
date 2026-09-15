@@ -58,9 +58,9 @@ public class ProdutoRepositorioTests {
     public void deveBuscarTodosOsProdutos () {
         List<Produto> produtos = produtoRepositorio.findAll(Sort.by("nome"));
 
-        assertEquals(5, produtos.size());
+        assertEquals(7, produtos.size());
         assertEquals("Caderno Universitário", produtos.get(0).getNome());
-        assertEquals("Mouse Gamer", produtos.get(1).getNome());
+        assertEquals("Código Limpo", produtos.get(1).getNome());
 
     }
     @Test 
